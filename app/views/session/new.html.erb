@@ -1,9 +1,7 @@
-<% content_for :title, "Register for Basewise" %>
+<% content_for :title, "Sign in to Basewise" %>
 
 <%= simple_form_for @user, url: {action: "create"} do |f| %>
   <%= f.input :email, placeholder: "Email address", error_prefix: "Email" %>
-  <%= f.input :first_name, placeholder: "First Name", error_prefix: "First Name"%>
-  <%= f.input :last_name, placeholder: "Last Name", error_prefix: "Last Name" %>
   <%= f.input :password, placeholder: "Password", error_prefix: "Password" %>
 
   <%= f.submit %>
