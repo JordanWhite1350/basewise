@@ -3,7 +3,7 @@ require 'test_helper'
 class SessionControllerTest < ActionController::TestCase
   context "GET /new" do
     should "get new" do
-      get :create
+      get :new
       assert_response :success
     end
   end
@@ -13,23 +13,23 @@ class SessionControllerTest < ActionController::TestCase
       @user = Fabricate(:user)
     end
 
-    should "post /create" do
-      post :create
-      assert_response :success
-    end
-
     context "user exists" do
       context "wrong password" do
-        should "render the new template" do
-          post :create, { email: @user.email, password: "foo" }
+        should "redirect to login page" do
+          post :create, user: { email: @user.email, password: "foo" }
           assert_template :new
         end
       end
 
       context "correct password" do
-        should "log user in and redirect to projects page" do
-          post :create, { email: @user.email, password: @user.password }
-          assert_not_nil assigns(:current_user)  
+        should "log user in" do
+          post :create, user: { email: @user.email, password: @user.password }
+          assert_equal @current_user, (session[@current_user]) 
+        end
+
+        should "redirect user to projects page" do
+          post :create, user: { email: @user.email, password: @user.password }
+          assert_not_nil assigns(:current_user)
           assert_redirected_to projects_path
         end
       end
@@ -37,25 +37,33 @@ class SessionControllerTest < ActionController::TestCase
 
     context "user does not exists" do
       should "render sessions#new template" do
-        post :create, { email: "foobar@foo.com" }
+        post :create, user: { email: "foobar@foo.com" }
         assert_template :new
       end
     end
   end
 
   context "DELETE" do
-    setup do
-      @user = Fabricate(:user)
+    context "when the user is not logged in" do
+      should "redirect to signin" do
+        delete :destroy
+        assert_redirected_to signin_path
+      end
     end
 
-    should "get destroy" do
-      get :destroy
-      assert_response :success
-    end
+    context "when the user is logged in" do
+      setup do
+        @user = Fabricate(:user)
+        login_user(@user)
+      end
 
-    should "log user out and redirect to login page" do
-      assert_nil assigns(:current_user) 
-      assert_redirected_to sessions_path
+      should "get destroy, log user out, redirect to signin page" do
+        delete :destroy
+        
+        assert_nil session[:user_id]
+        assert_nil @controller.current_user
+        assert_redirected_to signin_path
+      end
     end
   end
 end
