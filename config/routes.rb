@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  # Plural resources
   resources :projects
-  # resources :users
   resources :users, only: [:edit, :update, :destroy]
-  # Singular resources
+  resources :todo_lists, only: [:create, :update, :destroy, :show]
+
+  # Session
   get "signin" => "session#new", as: "signin"
   post "login" => "session#create", as: "login"
   delete "logout" => "session#destroy", as: "logout"
