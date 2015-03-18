@@ -1,7 +1,11 @@
 module ApplicationHelper
+  def brand_tag(user)
+    return nil unless user
+    (": " + link_to((user_name(user)), edit_user_path(user))).html_safe
+  end
   def user_name(user)
     return nil unless user
-    ": #{user.first_name.capitalize} #{user.last_name.capitalize}"
+    "#{user.first_name.capitalize} #{user.last_name.capitalize}"
   end
 
   def session_links(user)
