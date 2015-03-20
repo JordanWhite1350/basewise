@@ -52,6 +52,14 @@ textarea {
   }
 }
 
+input.slim {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
 textarea {
   resize: vertical;
 }

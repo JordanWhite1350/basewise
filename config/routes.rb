@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  resources :projects
+  resources :projects do
+    resources :todo_lists, only: [:create, :update, :destroy, :show] do
+      resources :todos, only: [:create, :update, :destroy]
+    end
+  end
+
   resources :users, only: [:edit, :update, :destroy]
-  resources :todo_lists, only: [:create, :update, :destroy, :show]
 
   # Session
   get "signin" => "session#new", as: "signin"

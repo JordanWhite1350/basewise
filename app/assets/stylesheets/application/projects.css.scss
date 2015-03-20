@@ -93,6 +93,21 @@ div.project {
   padding: 15px;
 }
 
+ul.todo-list-list {
+  li {
+    h3 {
+      color: $base-font-color;
+    }
+    h4 {
+      font-size: $base-font-size;
+      color: $medium-gray;
+    }
+    a {
+      font-size: $base-font-size * 0.5;
+    }
+  }
+}
+
 .sub-nav {
   @include clearfix;
   background-color: $base-background-color;
